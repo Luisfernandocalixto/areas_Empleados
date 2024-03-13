@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .employes,
+    .employes1,
+    .employes2,
+    .regresa {
+        animation: fadeIn 1s ease;
+        -moz-animation: fadeIn 1s ease;
+        -o-animation: fadeIn 1s ease;
+        -webkit-animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            filter: blur(20px);
+        }
+
+        10% {
+            opacity: 1;
+            filter: brightness(2) blur(10px);
+        }
+    }
+
+    @-moz-keyframes fadeIn {
+        0% {
+            opacity: 0;
+            filter: blur(20px);
+        }
+
+        10% {
+            opacity: 1;
+            filter: brightness(2) blur(10px);
+        }
+
+    }
+
+    @-o-keyframes fadeIn {
+        0% {
+            opacity: 0;
+            filter: blur(20px);
+        }
+
+        10% {
+            opacity: 1;
+            filter: brightness(2) blur(10px);
+        }
+
+    }
+
+    @-webkit-keyframes fadeIn {
+        0% {
+            opacity: 0;
+            filter: blur(20px);
+        }
+
+        10% {
+            opacity: 1;
+            filter: brightness(2) blur(10px);
+        }
+
+    }
+</style>
+
+<body style="background-color:#e7e4f0;">
+    {{>header}}
+
+    <br><br><br>
+    <h1 class="text-center">Empleados</h1>
+    <div class="text-center">
+
+        <button class="btn btn-primary employ1">Empleados en área</button>
+        <button class="btn btn-success employ">Lista de empleados</button>
+        <button class="btn btn-secondary employ2">Empleados sin área</button>
+    </div>
+
+    <br><br><br>
+    <div class="container text-center table-responsive employes"></div>
+    <div class="container text-center table-responsive employes2"></div>
+    <div class="container text-center table-responsive employes3"></div>
+    <div class="container text-center table-responsive employes1">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellidos</th>
+                    <th scope="col">Denominación</th>
+                    <th scope="col">Localización</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each empleados}}
+                <tr height="100px">
+                    <td>{{e_id}}</td>
+                    <td>{{nombre}}</td>
+                    <td>{{apellidos}} </td>
+                    <td>{{denominacion}}</td>
+                    <td>{{localizacion}}</td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    {{>footer}}
+    <script>
+        const employ = document.querySelector(".employes")
+        document.addEventListener("click", async function (event) {
+            const demoster = event.target.closest(".employ");
+            const demoster2 = event.target.closest(".employ2");
+            const demoster3 = event.target.closest(".employ1");
+            if (demoster) {
+                try {
+                    const response = await fetch('/timezone/employ');
+                    const result = await response.text();
+                    document.querySelector(".employes").innerHTML = result
+                    document.querySelector(".employes").style.display = "block"
+                    document.querySelector(".employes1").style.display = "none"
+                    document.querySelector(".employes2").style.display = "none"
+                    document.querySelector(".employes3").style.display = "none"
+
+                } catch (error) {
+                    console.error('Error al realizar la consulta ', error);
+                }
+
+            }
+            if (demoster2) {
+                try {
+                    const response = await fetch('/timezone/employnot');
+                    const result2 = await response.text();
+                    document.querySelector(".employes2").innerHTML = result2
+                    document.querySelector(".employes2").style.display = "block"
+                    document.querySelector(".employes3").style.display = "none"
+                    document.querySelector(".employes1").style.display = "none"
+                    document.querySelector(".employes").style.display = "none"
+
+                } catch (error) {
+                    console.error('Error al realizar la consulta ', error);
+                }
+
+            }
+            if (demoster3) {
+                try {
+                    const response = await fetch('/timezone/employed');
+                    const result3 = await response.text();
+                    document.querySelector(".employes3").innerHTML = result3
+                    document.querySelector(".employes3").style.display = "block"
+                    document.querySelector(".employes2").style.display = "none"
+                    document.querySelector(".employes1").style.display = "none"
+                    document.querySelector(".employes").style.display = "none"
+
+                } catch (error) {
+                    console.error('Error al realizar la consulta ', error);
+                }
+
+            }
+        })
+    </script>
+</body>
+
+</html>
