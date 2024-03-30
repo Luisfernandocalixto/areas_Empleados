@@ -42,6 +42,18 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use((req, res) => {
     res.render('./vistas/vista404.hbs');
 });
+
+app.get('/', async (req, res) => {
+    try {
+        const empleados = await pool.query(`SELECT * FROM empleados INNER JOIN departamentos ON empleados.e_id = departamentos.d_id;    `)
+        res.render('./vistas/inicio', { empleados })
+    } catch (error) {
+        console.error('Error al consultar en la base de datos:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
+
 // starting the server
 app.listen(app.get('port'), () => {
     console.log('Server on port', 'http://localhost:' + app.get('port'));
