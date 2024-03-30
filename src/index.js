@@ -33,7 +33,7 @@ app.use(express.json())
 // routes 
 // app.use(require('./routes'))
 app.use(require('./routes/links.js'))
-app.use('./vistas',require('./routes/links.js'));
+app.use('/vistas',require('./routes/links.js'));
 
 
 // public
