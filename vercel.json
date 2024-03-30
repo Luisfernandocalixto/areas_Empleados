@@ -9,6 +9,12 @@
         "src": "/(.*)",
         "dest": "/src/index.js"
       }
+    ],
+    "rewrites": [
+      {
+        "source": "/",
+        "destination": "/src/views/vistas/inicio.hbs"
+      }
     ]
   }
   
