@@ -46,8 +46,8 @@ app.use((req, res) => {
 });
 app.get('/', async (req, res) => {
     try {
-        // const empleados = await pool.query(`SELECT * FROM empleados INNER JOIN departamentos ON empleados.e_id = departamentos.d_id;    `)
-        // res.render('./vistas/inicio', { empleados })
+        const empleados = await pool.query(`SELECT * FROM empleados INNER JOIN departamentos ON empleados.e_id = departamentos.d_id;    `)
+        res.render('./vistas/inicio', { empleados })
         res.send('Hola')
     } catch (error) {
         console.error('Error al consultar en la base de datos:', error);
