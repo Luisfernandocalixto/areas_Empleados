@@ -2,15 +2,15 @@ const express = require('express')
 const router = express.Router()
 const pool = require("../database.js")
 
-// router.get('/', async (req, res) => {
-//     try {
-//         const empleados = await pool.query(`SELECT * FROM empleados INNER JOIN departamentos ON empleados.e_id = departamentos.d_id;    `)
-//         res.render('./vistas/inicio', { empleados })
-//     } catch (error) {
-//         console.error('Error al consultar en la base de datos:', error);
-//         res.status(500).send('Error interno del servidor');
-//     }
-// });
+router.get('/', async (req, res) => {
+    try {
+        const empleados = await pool.query(`SELECT * FROM empleados INNER JOIN departamentos ON empleados.e_id = departamentos.d_id;    `)
+        res.render('./vistas/inicio', { empleados })
+    } catch (error) {
+        console.error('Error al consultar en la base de datos:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
 
 
 router.get('/timezone/employ', async (req, res) => {
