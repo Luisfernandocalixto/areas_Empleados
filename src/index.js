@@ -7,6 +7,8 @@ const MySQLStore = require("express-mysql-session")
 // const passport = require('passport')
 const { database } = require('./keys')
 const util = require('util')
+const pool = require("./database.js")
+
 
 //  initialization
 const app = express()
@@ -33,11 +35,12 @@ app.use(express.json())
 // routes 
 // app.use(require('./routes'))
 app.use(require('./routes/links.js'))
-app.use('/vistas',require('./routes/links.js'));
+app.use('/vistas', require('./routes/links.js'));
 app.get('/', async (req, res) => {
     try {
-        const empleados = await pool.query(`SELECT * FROM empleados INNER JOIN departamentos ON empleados.e_id = departamentos.d_id;    `)
-        res.render('./vistas/inicio', { empleados })
+        // const empleados = await pool.query(`SELECT * FROM empleados INNER JOIN departamentos ON empleados.e_id = departamentos.d_id;    `)
+        // res.render('./vistas/inicio', { empleados })
+        res.send('Hola')
     } catch (error) {
         console.error('Error al consultar en la base de datos:', error);
         res.status(500).send('Error interno del servidor');
