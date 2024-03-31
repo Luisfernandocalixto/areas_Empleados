@@ -62,3 +62,6 @@ app.use((req, res) => {
 app.listen(app.get('port'), () => {
     console.log('Server on port', 'http://localhost:' + app.get('port'));
 })
+
+
+module.exports = app;
