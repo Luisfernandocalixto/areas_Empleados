@@ -2,10 +2,10 @@
   "name": "departamentos",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "start": "node src/index.js"
+    "dev": "nodemon src/index.ts",
+    "start": "node src/index.ts"
   },
   "keywords": [],
   "author": "",
