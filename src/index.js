@@ -36,6 +36,17 @@ app.use(express.json())
 // app.use(require('./routes'))
 app.use(require('./routes/links.js'))
 app.use('/vistas', require('./routes/links.js'));
+app.get('/', async (req, res) => {
+    try {
+        res.send('Hola')
+        // const empleados = await pool.query(`SELECT * FROM empleados INNER JOIN departamentos ON empleados.e_id = departamentos.d_id;    `)
+        // res.render('./vistas/inicio', { empleados })
+    } catch (error) {
+        console.error('Error al consultar en la base de datos:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+});
+
 
 
 
