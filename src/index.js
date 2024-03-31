@@ -6,7 +6,7 @@ const path = require('path')
 const session = require("express-session")
 const MySQLStore = require("express-mysql-session")
 // const passport = require('passport')
-const { database } = require('./keys')
+const { database } = require('./keys.js')
 const util = require('util')
 const pool = require("./database.js")
 
