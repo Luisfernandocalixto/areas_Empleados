@@ -1,6 +1,7 @@
 const mysql = require('mysql');
 const { promisify } = require('util');
-const { database } = require("./keys.js");
+const { database, databaseT } = require("./keys.js");
+const { createClient } = require("@libsql/client");
 const pool = mysql.createPool(database);
 
 pool.getConnection((err, connection) => {
@@ -23,4 +24,14 @@ pool.getConnection((err, connection) => {
 
 pool.query = promisify(pool.query);
 
-module.exports = pool;
+
+const client = createClient({
+    url: 'https://my-db-luisfernandocalixto.turso.io',
+    authToken: process.env.DB_TOKEN,
+});
+
+
+module.exports = {
+    pool,
+    client
+};
