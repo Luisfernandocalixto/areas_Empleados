@@ -3,6 +3,8 @@ const { promisify } = require('util');
 const { database, databaseT } = require("./keys.js");
 const { createClient } = require("@libsql/client");
 const pool = mysql.createPool(database);
+dotenv.config()
+
 
 pool.getConnection((err, connection) => {
     if (err) {
