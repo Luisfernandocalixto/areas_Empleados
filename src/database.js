@@ -3,7 +3,7 @@ const { promisify } = require('util');
 const { database, databaseT } = require("./keys.js");
 const { createClient } = require("@libsql/client");
 const pool = mysql.createPool(database);
-const { DB_TOKEN, URL } = require('../src/config/config.js');
+const { DB_TOKEN, URL_CLIENT } = require('../src/config/config.js');
 // require('dotenv').config();
 
 
@@ -29,7 +29,7 @@ pool.query = promisify(pool.query);
 
 
 const client = createClient({
-    url: URL,
+    url: URL_CLIENT,
     authToken: DB_TOKEN,
 });
 
