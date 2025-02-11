@@ -3,7 +3,8 @@ const { promisify } = require('util');
 const { database, databaseT } = require("./keys.js");
 const { createClient } = require("@libsql/client");
 const pool = mysql.createPool(database);
-require('dotenv').config();
+const { DB_TOKEN, URL } = require('../src/config/config.js');
+// require('dotenv').config();
 
 
 pool.getConnection((err, connection) => {
@@ -28,8 +29,8 @@ pool.query = promisify(pool.query);
 
 
 const client = createClient({
-    url: 'https://my-db-luisfernandocalixto.turso.io',
-    authToken: process.env.DB_TOKEN,
+    url: URL,
+    authToken: DB_TOKEN,
 });
 
 
