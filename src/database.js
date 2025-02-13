@@ -29,7 +29,7 @@ pool.query = promisify(pool.query);
 
 
 const client = createClient({
-    url: URL_CLIENT,
+    url: `${URL_CLIENT}`,
     authToken: DB_TOKEN,
 });
 
