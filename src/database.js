@@ -4,7 +4,7 @@ const { database, databaseT } = require("./keys.js");
 const { createClient } = require("@libsql/client");
 const pool = mysql.createPool(database);
 const { DB_TOKEN, URL_CLIENT } = require('../src/config/config.js');
-// require('dotenv').config();
+require('dotenv').config();
 
 
 pool.getConnection((err, connection) => {
