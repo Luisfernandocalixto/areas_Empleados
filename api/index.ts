@@ -36,7 +36,7 @@ app.use(require('../src/routes/links.js'))
 
 
 // public
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.static(path.join(__dirname, '../src/public')));
 
 app.use((req, res) => {
     res.render('./vistas/vista404.hbs');
