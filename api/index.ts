@@ -15,6 +15,8 @@ const app = express()
 
 // setting
 app.set('port', process.env.PORT || 3000);
+app.disable('x-powered-by');
+
 app.set('views', path.join(__dirname, '../src/views'))
 app.engine('.hbs', engine({
     defaultLayout: 'main',
