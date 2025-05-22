@@ -1,32 +1,105 @@
+{{>header}}
 
-    {{>header}}
 
-    <br><br><br>
-    <h1 class="text-center">Empleados</h1>
-    <div class="text-center">
+<br><br><br>
+<h1 class="text-center">Empleados</h1>
+<div class="text-center">
 
-        <button class="btn btn-primary employ1">Empleados en área</button>
-        <button class="btn btn-success employ">Lista de empleados</button>
-        <button class="btn btn-secondary employ2">Empleados sin área</button>
-    </div>
+    <button class="btn btn-primary employ1">Empleados en área</button>
+    <button class="btn btn-success employ">Lista de empleados</button>
+    <button class="btn btn-secondary employ2">Empleados sin área</button>
+</div>
 
-    <br><br><br>
-    <div class="container text-center table-responsive employes"></div>
-    <div class="container text-center table-responsive employes2"></div>
-    <div class="container text-center table-responsive employes3"></div>
-    <div class="container text-center table-responsive employes1">
-        <table class="table table-striped table-hover">
-            <thead class="table-dark">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Apellidos</th>
-                    <th scope="col">Denominación</th>
-                    <th scope="col">Localización</th>
-                </tr>
-            </thead>
-            <tbody>
+<br><br><br>
+<div class="container text-center table-responsive employes1">
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Denominación</th>
+                <th scope="col">Localización</th>
+            </tr>
+        </thead>
+        <tbody class="principalTbody">
+            {{#each empleados}}
+            <tr height="100px">
+                <td>{{empleado_id}}</td>
+                <td>{{nombre}}</td>
+                <td>{{apellidos}} </td>
+                <td>{{denominacion}}</td>
+                <td>{{localizacion}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
+{{>footer}}
+<script>
+    const values = `
                 {{#each empleados}}
+                    {{empleado_id}}
+                    {{nombre}}
+                    {{apellidos}}
+                    {{denominacion}}
+                    {{localizacion}},                
+                {{/each}}`;
+
+
+    const stringSpace = values.replace(/ /g, '')
+    const dataValue = stringSpace.split(',')
+
+    let hideSpaces = ''
+    let divide, result
+    const principalTbody = document.querySelector('.principalTbody');
+    const items = Array.from(principalTbody.querySelectorAll('tr'))
+    const showItems = items.map(val => {
+        hideSpaces = val.innerText
+        divide = hideSpaces.split("\t")
+        return divide
+    }
+    )
+
+    let val
+
+
+    let employInArea = [];
+
+    function provideArea() {
+        showItems.map(e => {
+            if (e[3]) {
+                employInArea.push(e)
+            }
+
+        }
+
+        )
+    }
+    provideArea()
+
+
+    let employNoneArea = [];
+
+    function provideNoneArea() {
+        showItems.map(e => {
+            if (!e[3]) {
+                employNoneArea.push(e)
+
+            }
+        }
+        )
+    }
+    provideNoneArea()
+
+    const employ = document.querySelector(".employes")
+    document.addEventListener("click", async function (event) {
+        const demoster = event.target.closest(".employ");
+        const demoster2 = event.target.closest(".employ2");
+        const demoster3 = event.target.closest(".employ1");
+        if (demoster) {
+            document.querySelector('.principalTbody').innerHTML = `
+                 {{#each empleados}}
                 <tr height="100px">
                     <td>{{empleado_id}}</td>
                     <td>{{nombre}}</td>
@@ -35,61 +108,20 @@
                     <td>{{localizacion}}</td>
                 </tr>
                 {{/each}}
-            </tbody>
-        </table>
-    </div>
-    {{>footer}}
-    <script>
-        const employ = document.querySelector(".employes")
-        document.addEventListener("click", async function (event) {
-            const demoster = event.target.closest(".employ");
-            const demoster2 = event.target.closest(".employ2");
-            const demoster3 = event.target.closest(".employ1");
-            if (demoster) {
-                try {
-                    const response = await fetch('/timezone/employ');
-                    const result = await response.text();
-                    document.querySelector(".employes").innerHTML = result
-                    document.querySelector(".employes").style.display = "block"
-                    document.querySelector(".employes1").style.display = "none"
-                    document.querySelector(".employes2").style.display = "none"
-                    document.querySelector(".employes3").style.display = "none"
+       `
 
-                } catch (error) {
-                    console.error('Error al realizar la consulta ', error);
-                }
 
-            }
-            if (demoster2) {
-                try {
-                    const response = await fetch('/timezone/employnot');
-                    const result2 = await response.text();
-                    document.querySelector(".employes2").innerHTML = result2
-                    document.querySelector(".employes2").style.display = "block"
-                    document.querySelector(".employes3").style.display = "none"
-                    document.querySelector(".employes1").style.display = "none"
-                    document.querySelector(".employes").style.display = "none"
 
-                } catch (error) {
-                    console.error('Error al realizar la consulta ', error);
-                }
+        }
+        if (demoster2) {
+            document.querySelector('.principalTbody').innerHTML = employNoneArea.map(e => `<tr height="100px">${e.map(val => `<td>${val}</td>`).join('')}<tr/>`).join('')
 
-            }
-            if (demoster3) {
-                try {
-                    const response = await fetch('/timezone/employed');
-                    const result3 = await response.text();
-                    document.querySelector(".employes3").innerHTML = result3
-                    document.querySelector(".employes3").style.display = "block"
-                    document.querySelector(".employes2").style.display = "none"
-                    document.querySelector(".employes1").style.display = "none"
-                    document.querySelector(".employes").style.display = "none"
 
-                } catch (error) {
-                    console.error('Error al realizar la consulta ', error);
-                }
 
-            }
-        })
-    </script>
+        }
+        if (demoster3) {
+            document.querySelector('.principalTbody').innerHTML = employInArea.map(e => `<tr height="100px">${e.map(val => `<td>${val}</td>`).join('')}<tr/>`).join('')
 
+        }
+    })
+</script>
