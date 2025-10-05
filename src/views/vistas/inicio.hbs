@@ -11,7 +11,7 @@
 </div>
 
 <br><br><br>
-<div class="container text-center table-responsive employes1">
+<div class="container text-center table-responsive employes1" data-employee="{{empleados}}">
     <table class="table table-striped table-hover">
         <thead class="table-dark">
             <tr>
@@ -25,7 +25,7 @@
         <tbody class="principalTbody">
             {{#each empleados}}
             <tr height="100px">
-                <td>{{empleado_id}}</td>
+                <td>{{id}}</td>
                 <td>{{nombre}}</td>
                 <td>{{apellidos}} </td>
                 <td>{{denominacion}}</td>
@@ -36,92 +36,45 @@
     </table>
 </div>
 {{>footer}}
-<script>
-    const values = `
-                {{#each empleados}}
-                    {{empleado_id}}
-                    {{nombre}}
-                    {{apellidos}}
-                    {{denominacion}}
-                    {{localizacion}},                
-                {{/each}}`;
-
-
-    const stringSpace = values.replace(/ /g, '')
-    const dataValue = stringSpace.split(',')
-
-    let hideSpaces = ''
-    let divide, result
+<script type="module">
+    import { tablePrincipal, isTable} from '/js/template/employee.mjs';
+    import { getDataFilter} from '/js/inicio.mjs';
     const principalTbody = document.querySelector('.principalTbody');
-    const items = Array.from(principalTbody.querySelectorAll('tr'))
+    const container = document.querySelector('.container');
+    const items = Array.from(principalTbody.querySelectorAll('tr'));
+    let hideSpaces, divide;
     const showItems = items.map(val => {
         hideSpaces = val.innerText
         divide = hideSpaces.split("\t")
         return divide
-    }
-    )
-
-    let val
+    });
 
 
-    let employInArea = [];
 
-    function provideArea() {
-        showItems.map(e => {
-            if (e[3]) {
-                employInArea.push(e)
-            }
-
-        }
-
-        )
-    }
-    provideArea()
-
-
-    let employNoneArea = [];
-
-    function provideNoneArea() {
-        showItems.map(e => {
-            if (!e[3]) {
-                employNoneArea.push(e)
-
-            }
-        }
-        )
-    }
-    provideNoneArea()
-
-    const employ = document.querySelector(".employes")
-    document.addEventListener("click", async function (event) {
-        const demoster = event.target.closest(".employ");
-        const demoster2 = event.target.closest(".employ2");
-        const demoster3 = event.target.closest(".employ1");
-        if (demoster) {
-            document.querySelector('.principalTbody').innerHTML = `
-                 {{#each empleados}}
+    const filterInArea =   showItems.filter(e => e[3]);
+    const filterNoneArea = showItems.filter(e => !e[3]);
+    const employNoneArea = getDataFilter({dataByFilter: filterNoneArea});
+    const employInArea =  getDataFilter({dataByFilter: filterInArea});
+    
+    const isFragment = `{{#each empleados}}
                 <tr height="100px">
-                    <td>{{empleado_id}}</td>
+                    <td>{{id}}</td>
                     <td>{{nombre}}</td>
                     <td>{{apellidos}} </td>
                     <td>{{denominacion}}</td>
                     <td>{{localizacion}}</td>
                 </tr>
                 {{/each}}
-       `
+`;
 
+    document.addEventListener("click", async function (event) {
+        const demoster = event.target.closest(".employ");
+        const demoster2 = event.target.closest(".employ2");
+        const demoster3 = event.target.closest(".employ1");
+        if (demoster) container.innerHTML = tablePrincipal({ fragment: isFragment});
 
-
-        }
-        if (demoster2) {
-            document.querySelector('.principalTbody').innerHTML = employNoneArea.map(e => `<tr height="100px">${e.map(val => `<td>${val}</td>`).join('')}<tr/>`).join('')
-
-
-
-        }
-        if (demoster3) {
-            document.querySelector('.principalTbody').innerHTML = employInArea.map(e => `<tr height="100px">${e.map(val => `<td>${val}</td>`).join('')}<tr/>`).join('')
-
-        }
+        if (demoster2) container.innerHTML = isTable({ data :employNoneArea});
+        
+        if (demoster3)  container.innerHTML = isTable({ data :employInArea});
     })
 </script>
